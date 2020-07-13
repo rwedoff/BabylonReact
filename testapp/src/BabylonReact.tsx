@@ -27,6 +27,9 @@ export const EngineView: FunctionComponent<BabylonViewProps> = (props: BabylonVi
 
       camera.attachControl(canvas);
 
+      canvas.addEventListener("focus", (engine as any)._onCanvasFocus);
+      canvas.addEventListener("blur", (engine as any)._onCanvasBlur);
+
       engine.registerView(canvas, camera);
 
       const onBeforeRender = () => {
@@ -40,14 +43,16 @@ export const EngineView: FunctionComponent<BabylonViewProps> = (props: BabylonVi
         scene.onBeforeRenderObservable.remove(beforeRenderObserver);
         camera.detachControl(canvas);
         engine.unRegisterView(canvas);
+        canvas.removeEventListener("focus", (engine as any)._onCanvasFocus);
+        canvas.removeEventListener("blur", (engine as any)._onCanvasBlur);
       }
     }
-    return () => {};
+    return () => { };
   }, [divRef, canvasRef, props.camera]);
 
   return (
     <>
-      <div ref={divRef} style={{width: props.width, height: props.height}}>
+      <div ref={divRef} style={{ width: props.width, height: props.height }}>
         <canvas ref={canvasRef} />
       </div>
     </>

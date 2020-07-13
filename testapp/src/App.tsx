@@ -11,7 +11,7 @@ function App() {
     const scene1 = new Babylon.Scene(engine);
     const light1 = new Babylon.HemisphericLight("light1", new Babylon.Vector3(0, 1, 0), scene1);
     light1.intensity = 0.7;
-    const shape1 = Babylon.MeshBuilder.CreateBox("Box1", {size: 2}, scene1);
+    const shape1 = Babylon.MeshBuilder.CreateBox("Box1", { size: 2 }, scene1);
     shape1.position.y = 0.5;
     const mat1 = new Babylon.PBRMetallicRoughnessMaterial("mat1", scene1);
     mat1.metallic = 1;
@@ -23,7 +23,7 @@ function App() {
     const scene2 = new Babylon.Scene(engine);
     const light2 = new Babylon.HemisphericLight("light2", new Babylon.Vector3(0, 1, 0), scene2);
     light2.intensity = 0.7;
-    const shape2 = Babylon.MeshBuilder.CreateBox("Shape2", {size: 2}, scene2);
+    const shape2 = Babylon.MeshBuilder.CreateBox("Shape2", { size: 2 }, scene2);
     shape2.position.y = 0.5;
     const mat2 = new Babylon.PBRMetallicRoughnessMaterial("mat2", scene2);
     mat2.metallic = 1;
@@ -31,6 +31,21 @@ function App() {
     mat2.baseColor = Babylon.Color3.Red();
     shape2.material = mat2;
     scene2.createDefaultEnvironment();
+
+    const action = new Babylon.ExecuteCodeAction(Babylon.ActionManager.OnPickDownTrigger, evt => {
+      debugger;
+      alert(evt.meshUnderPointer);
+    });
+
+    const sphere = Babylon.MeshBuilder.CreateSphere("sphere" + 0, { diameter: 0.5 }, scene1);
+    sphere.position = new Babylon.Vector3(-2.5, 0, 0);
+    sphere.actionManager = new Babylon.ActionManager(scene1);
+    sphere.actionManager.registerAction(action);
+
+    const sphere2 = Babylon.MeshBuilder.CreateSphere("sphere" + 0, { diameter: 0.5 }, scene2);
+    sphere2.position = new Babylon.Vector3(-2.5, 0, 0);
+    sphere2.actionManager = new Babylon.ActionManager(scene2);
+    sphere2.actionManager.registerAction(action);
 
     const camera1 = new Babylon.ArcRotateCamera("Camera1", 0, 0.8, 5, Babylon.Vector3.Zero(), scene1);
     camera1.lowerRadiusLimit = 4;
